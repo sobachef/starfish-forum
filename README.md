@@ -2,6 +2,14 @@
 
 A minimalist forum app powered by Starfish authentication.
 
+# Try
+
+You can try the demo at https://demo.starfish.computer/
+
+![starfish-forum](starfish-forum.png)
+
+Also watch the video tutorial for this app here: https://youtu.be/teip7xN0Bo0?t=85
+
 # How to run
 
 ```
