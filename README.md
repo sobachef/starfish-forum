@@ -2,6 +2,8 @@
 
 A minimalist forum app powered by Starfish authentication.
 
+---
+
 # Try
 
 You can try the demo at https://demo.starfish.computer/
@@ -10,7 +12,11 @@ You can try the demo at https://demo.starfish.computer/
 
 Also watch the video tutorial for this app here: https://youtu.be/teip7xN0Bo0?t=85
 
+---
+
 # How to run
+
+Clone this repository, install, and run.
 
 ```
 git clone https://github.com/sobachef/starfish-forum.git
@@ -19,6 +25,8 @@ npm start
 ```
 
 and then open http://localhost:3028
+
+---
 
 # App Structure
 
@@ -40,6 +48,8 @@ There are 3 phases:
 3. At Logout
 
 ## 1. At Login
+
+![server](server.png)
 
 When a user wants to log in, the user clicks the "connect" button. Here's what happens when the connect button is clicked:
 
