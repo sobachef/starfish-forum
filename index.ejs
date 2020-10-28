@@ -1,0 +1,167 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://starfish.computer/starfish.js"></script>
+<style>
+body {
+  font-family: Sans-serif;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+.name {
+  font-weight: bold;
+  color: rgba(0,0,0,0.8);
+}
+.address {
+  font-size: 14px;
+  font-weight: bold;
+  padding-right: 10px;
+}
+form#message {
+  display: flex;
+}
+form#message input[type=text] {
+  flex-grow: 1;
+  border-radius: 0;
+  border: 1px solid rgba(0,0,0,0.4);
+}
+.message {
+  display: flex;
+  font-size: 14px;
+  padding: 10px 0;
+}
+.message .col {
+  margin-left: 10px;
+  flex-grow: 1;
+}
+.message .text {
+  padding: 5px 0;
+}
+.message .timestamp {
+  color: gray;
+}
+.avatar {
+  height: 50px;
+}
+header .avatar {
+  height: 100px;
+}
+header {
+  text-align: center;
+  padding: 50px;
+  font-size: 14px;
+}
+header > * {
+  padding: 10px;
+}
+input[type=submit], .button {
+  text-decoration: none;
+  background: rgba(0,0,0,0.8);
+  border: none;
+  padding: 10px;
+  color: white;
+}
+input[type=text] {
+  border-radius: 0;
+  padding: 10px;
+}
+.flexible {
+  flex-grow: 1;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  <% if (address) { %>
+    document.querySelector("form#message").addEventListener("submit", async (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      try {
+        let result = await Starfish.sign(document.querySelector("[name=message]").value)
+        document.querySelector("[name=sig]").value = result.sig
+        document.querySelector("[name=address]").value = result.address
+        e.target.submit()
+      } catch (err) {
+        if (/ReferenceError.*Starfish/.test(err.toString())) {
+          let c = confirm("Please install Starfish")
+          if (c) {
+            location.href = "https://starfish.computer"
+          }
+        }
+      }
+    })
+  <% } else { %>
+    document.querySelector("form#login").addEventListener("submit", async (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      try {
+        let result = await Starfish.sign("<%=token%>")
+        console.log("result = ", result)
+        document.querySelector("[name=address]").value = result.address
+        document.querySelector("[name=signature]").value = result.sig
+        e.target.submit()
+      } catch (err) {
+        if (/ReferenceError.*Starfish/.test(err.toString())) {
+          let c = confirm("Please install Starfish")
+          if (c) {
+            location.href = "https://starfish.computer"
+          }
+        }
+      }
+    })
+  <% } %>
+})
+</script>
+</head>
+<body>
+<nav>
+<% if (address) { %>
+  <header>
+    <h1>Starfish Bulletin Board</h1>
+    <form method='post' action='/logout'>
+      <input type='hidden' name='_csrf' value="<%=token%>">
+      <input type='submit' value='logout'>
+      <a href="/" class='button'>Github</a>
+    </form>
+  </header>
+<% } else { %>
+  <header>
+    <form method='post' action='/login' id='login'>
+      <input type='hidden' name='_csrf' value="<%=token%>">
+      <input type='hidden' name='address'>
+      <input type='hidden' name='signature'>
+      <input type='submit' value='connect'>
+      <a href="/" class='button'>Github</a>
+    </form>
+  </header>
+<% } %>
+</nav>
+<div class='messages'>
+  <% if (address) { %>
+    <div class='message'>
+      <img class='avatar' src="https://avatars.dicebear.com/api/human/<%=address%>.svg">
+      <div class='col'>
+        <div class='address'><%=address%></div>
+        <form method='post' action='/message' id='message' class='text'>
+          <input type='text' name='message' autofocus>
+          <input type='hidden' name='sig'>
+          <input type='hidden' name='_csrf' value="<%=token%>">
+          <input type='hidden' name='address'>
+          <input type='submit' value='post'>
+        </form>
+      </div>
+    </div>
+  <% } %>
+  <% messages.forEach((m) => { %>
+    <div class='message'>
+      <img class='avatar' src="https://avatars.dicebear.com/api/human/<%=m.address%>.svg">
+      <div class='col'>
+        <div class='address'><%=m.address%></div>
+        <div class='text'><%=m.message%></div>
+        <div class='timestamp'><%=m.ts%></div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+</body>
+</html>

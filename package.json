@@ -1,0 +1,20 @@
+{
+  "name": "starfish-forum",
+  "version": "0.0.1",
+  "description": "a minimalist demo app with starfish authentication and cookies",
+  "main": "starfish.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bitcore-message": "^1.0.4",
+    "cookie-parser": "^1.4.5",
+    "csurf": "^1.11.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "timeago.js": "^4.0.2"
+  }
+}
